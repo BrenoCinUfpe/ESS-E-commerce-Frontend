@@ -173,7 +173,7 @@ function ProductPageContent() {
   }, [session]);
 
   return (
-    <div className="w-full max-w-5xl">
+    <div className="w-full max-w-5xl p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Cadastro de Itens</h1>
       </div>
