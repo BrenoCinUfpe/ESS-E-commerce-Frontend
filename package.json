@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "devCompile": "concurrently \"next dev\" \"npx tsc preCompileFunction.ts && node preCompileFunction.js\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -18,6 +19,8 @@
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
     "formik": "^2.4.6",
     "framer-motion": "^11.2.11",
     "lodash": "^4.17.21",

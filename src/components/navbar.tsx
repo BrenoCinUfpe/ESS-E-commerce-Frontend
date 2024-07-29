@@ -282,7 +282,7 @@ const Navbar = () => {
     <div className={`w-full h-fit p-2 sticky top-0 z-50 bg-white`}>
       <div className={`bg-white rounded-md h-12 sticky flex ml-[30px] mr-[30px] gap-3`}>
         <div className={`p-4 flex justify-center items-center`}>
-          <a className={`font-abel text-[25px] hover:cursor-pointer`} onClick={handleLogoClick}>SAPATOS.COM</a>
+          <a className={`font-abel text-[25px] hover:cursor-pointer`} onClick={handleLogoClick}>ESSapatos</a>
         </div>
             <NavigationMenu className={`transition-all`}>
               <NavigationMenuList>

@@ -11,7 +11,7 @@ import Provider from "./Provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "E-Commerce Sapatos",
+  title: "ESSapatos",
   description: "Projeto da disciplina de Engenharia de Software (CIn - UFPE)",
 };
 

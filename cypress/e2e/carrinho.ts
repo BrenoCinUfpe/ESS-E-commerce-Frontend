@@ -75,7 +75,7 @@ When('O usuário clica no botão "Remover" correspondente ao produto de ID "1" n
         .click();
 })
 Then('O produto deve ser removido da lista do carrinho', () => {
-    cy.get("#productContainer #productName")
+    cy.get("#productContainer")
         .should("not.contain", "Produto A");
 })
 
