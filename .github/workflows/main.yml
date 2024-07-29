@@ -78,7 +78,6 @@ jobs:
         with:
           repository: BrenoCinUfpe/ESS-E-commerce-Backend
           path: backend
-          token: ${{ secrets.GH_PAT }}
 
       - name: Setup backend Node.js
         uses: actions/setup-node@v2
