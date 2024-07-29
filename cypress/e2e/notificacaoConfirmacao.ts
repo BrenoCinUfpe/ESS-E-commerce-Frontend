@@ -4,7 +4,6 @@ import { Admin } from '../fixtures/users.json';
 const baseUrl = "http://localhost:3000";
 const serverBaseUrl = "http://localhost:3333";
 
-// Passo de login incluído
 Given('O usuário de email "admin@gmail.com" está logado', () => {
     cy.visit(baseUrl);
 
