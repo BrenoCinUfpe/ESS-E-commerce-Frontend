@@ -53,6 +53,26 @@ jobs:
       - name: Install frontend dependencies
         run: npm install
 
+      - name: Build frontend
+        run: npm run build
+        env:
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: SADIASOD2931
+          NEXT_PUBLIC_SERVER_URL: http://localhost:3333
+          AUTH_SECRET: 21930129302
+
+      - name: Start frontend
+        run: npm run start &
+        env:
+            NEXTAUTH_URL: http://localhost:3000
+            NEXTAUTH_SECRET: SADIASOD2931
+            NEXT_PUBLIC_SERVER_URL: http://localhost:3333
+            AUTH_SECRET: 21930129302
+
+      - name: Wait for frontend to be ready
+        run: |
+          until curl http://localhost:3000; do sleep 5; done
+
       - name: Checkout backend repository
         uses: actions/checkout@v2
         with:
@@ -88,26 +108,6 @@ jobs:
       - name: Wait for backend to be ready
         run: |
           until curl http://localhost:3333/api/health; do sleep 5; done
-
-      - name: Build frontend
-        run: npm run build
-        env:
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: SADIASOD2931
-          NEXT_PUBLIC_SERVER_URL: http://localhost:3333
-          AUTH_SECRET: 21930129302
-
-      - name: Start frontend
-        run: npm run start &
-        env:
-            NEXTAUTH_URL: http://localhost:3000
-            NEXTAUTH_SECRET: SADIASOD2931
-            NEXT_PUBLIC_SERVER_URL: http://localhost:3333
-            AUTH_SECRET: 21930129302
-
-      - name: Wait for frontend to be ready
-        run: |
-          until curl http://localhost:3000; do sleep 5; done
 
       - name: Run Cypress tests
         run: npx cypress run --browser chrome
