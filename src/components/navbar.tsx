@@ -48,7 +48,18 @@ import RegisterComponent from './register';
 import LoggedInCardComponent from './logged-in';
 import ForgotPasswordComponent from './forgot-password';
 import { useRouter } from 'next/navigation';
-import { Product } from './product-carrousel';
+
+interface Categoria {
+  id: string
+  nome: string
+};
+
+interface Product {
+  cartId: number
+  productId: number
+  quantity: number
+  userId: number
+}
 
 interface Cart {
   id?: number
@@ -56,11 +67,6 @@ interface Cart {
   locked?: boolean
   products: Product[]
 }
-
-interface Categoria {
-  id: string
-  nome: string
-};
 
 const Navbar = () => {
   let { data: session } = useSession();

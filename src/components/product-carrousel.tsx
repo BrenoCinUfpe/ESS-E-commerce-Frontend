@@ -78,7 +78,7 @@ const ProductCarousel = ({ products, addToCart, addMessage }: TProductCarouselCo
           <div key={index} className="p-4">
             <div className="relative border p-3 rounded-lg flex flex-col items-center justify-between w-full h-96 group">
               <img
-                src={product?.productMedia[0]?.media?.url ? product?.productMedia[0]?.media?.url : "https://media.istockphoto.com/id/1055079680/vector/black-linear-photo-camera-like-no-image-available.jpg?s=612x612&w=0&k=20&c=P1DebpeMIAtXj_ZbVsKVvg-duuL0v9DlrOZUvPG6UJk="
+                src={product?.productMedia && product?.productMedia[0]?.media?.url ? product?.productMedia[0]?.media?.url : "https://media.istockphoto.com/id/1055079680/vector/black-linear-photo-camera-like-no-image-available.jpg?s=612x612&w=0&k=20&c=P1DebpeMIAtXj_ZbVsKVvg-duuL0v9DlrOZUvPG6UJk="
                 }
                 alt={product.name}
                 className="w-full h-48 object-cover mb-4"
