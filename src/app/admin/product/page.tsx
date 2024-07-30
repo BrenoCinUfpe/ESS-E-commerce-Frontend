@@ -143,7 +143,7 @@ function ProductPageContent() {
 
   const getInfo = async () => {
     try {
-        const generalProductResponse = await axiosAuth.get("/api/product");
+        const generalProductResponse = await axiosAuth.get("/api/product?perPage=1000");
         const generalProducts = generalProductResponse.data.data;
 
         const detailedProducts = await Promise.all(generalProducts.map(async (product: { id: any; }) => {
@@ -173,12 +173,13 @@ function ProductPageContent() {
   }, [session]);
 
   return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div className="w-full max-w-5xl p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Cadastro de Itens</h1>
       </div>
 
-      <div className="bg-gray-100 p-4 rounded-lg mb-8 w-full">
+      <div className="bg-gray-100 p-4 rounded-lg mb-8 w-full mx-auto">
         {selectedProduct ? (
           <div>
             <h1 className="text-xl font-bold  mb-4">{selectedProduct.name}</h1>
@@ -376,6 +377,7 @@ function ProductPageContent() {
         </div>
       </div>
     </div>
+</main>
   );
 }
 
