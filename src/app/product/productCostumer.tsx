@@ -102,7 +102,7 @@ useEffect(() => {
   if (session) {
       const getInfo = async () => {
           try {
-              const generalProductResponse = await axiosAuth.get("/api/product");
+              const generalProductResponse = await axiosAuth.get("/api/product?perPage=1000");
               const generalProducts = generalProductResponse.data.data;
 
               const detailedProducts = await Promise.all(generalProducts.map(async (product: { id: any; }) => {
@@ -135,7 +135,7 @@ useEffect(() => {
 
   const changeFilter = async(searchP:string) => {
     const getInfo = async () => {
-      const info = await axiosAuth.get(`/api/product?${searchP?`search=${searchP}`:''}`)
+      const info = await axiosAuth.get(`/api/product?perPage=1000${searchP?`search=${searchP}`:''}`)
       if (info.data){
         console.log(info.data);
       }

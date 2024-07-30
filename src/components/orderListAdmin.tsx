@@ -227,7 +227,7 @@ const OrderList = () => {
                         fetched && fetched.length>0
                             ?
                             fetched.map(item => (
-                                <>
+                            <div key={item.id}>
                                 <div className={`w-full flex justify-center items-center bg-projGray rounded-lg mt-3 p-2 ${item.status=='CANCELED'?'opacity-50':''}`}>
                                     <div className={`w-full`}>
                                         <p className={`w-full flex justify-center font-semibold`}>{`Pedido N#`+item.id}</p>
@@ -274,7 +274,7 @@ const OrderList = () => {
                                         }
                                     </div>
                                 </div>    
-                                </>
+                            </div>
                             ))
                             :
                             <div className={`w-full flex justify-center items-center bg-projGray rounded-lg p-4`}>

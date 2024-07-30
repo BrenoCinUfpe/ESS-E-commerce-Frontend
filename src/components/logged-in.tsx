@@ -25,46 +25,37 @@ const LoggedInCardComponent = ({ userData, handleSignOut }: TLoggedInCardCompone
   const redirectToProduct = () => router.push('/admin/product');
   
   return (
-    <Card>
+    <Card className="p-4 max-w-full mx-auto my-4 bg-white rounded-lg shadow-md md:max-w-md">
       <CardHeader>
-        <CardTitle id="loggedInMessage" >Bem-vindo, {userData?.name ? userData.name : 'Carregando...'}</CardTitle>
-        <CardDescription id="loggedInEmail">{userData?.email ? userData.email : ''}</CardDescription>
+        <CardTitle id="loggedInMessage" className="text-xl font-bold mb-2">Bem-vindo, {userData?.name ? userData.name : 'Carregando...'}</CardTitle>
+        <CardDescription id="loggedInEmail" className="text-gray-600">{userData?.email ? userData.email : ''}</CardDescription>
       </CardHeader>
       <CardContent className="flex gap-3 flex-col">
         <Dialog open={isUpdateProfileOpen} onOpenChange={setUpdateProfileOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => setUpdateProfileOpen(true)} id="updatePersonalDataButton">Atualizar meus dados</Button>
+            <Button onClick={() => setUpdateProfileOpen(true)} id="updatePersonalDataButton" className="w-full">Atualizar meus dados</Button>
           </DialogTrigger>
-          <DialogContent id="loggedInCloseButton">
+          <DialogContent id="loggedInCloseButton" className="p-4">
             <UpdateProfileComponent onClose={handleUpdateProfileClose} />
           </DialogContent>
         </Dialog>
         <Dialog open={isChangePasswordOpen} onOpenChange={setChangePasswordOpen}>
           <DialogTrigger asChild>
-            <Button id="updatePersonalPasswordButton" onClick={() => setChangePasswordOpen(true)}>Mudar minha senha</Button>
+            <Button id="updatePersonalPasswordButton" onClick={() => setChangePasswordOpen(true)} className="w-full">Mudar minha senha</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="p-4">
             <ChangePasswordComponent onClose={handleChangePasswordClose} />
           </DialogContent>
         </Dialog>
-        {
-          userData.role=='ADMIN'
-            && 
-            <Button onClick={() => redirectToUser()} id="usersButton">Usuários</Button>
-        }
-        {
-          userData.role=='ADMIN'
-            && 
-            <Button onClick={() => redirectToProduct()}>Produtos</Button>
-        }
-        {
-          userData.role=='ADMIN'
-            ?
+        {userData.role === 'ADMIN' && (
+          <>
+            <Button onClick={redirectToUser} id="usersButton" className="w-full">Usuários</Button>
+            <Button onClick={redirectToProduct} className="w-full">Produtos</Button>
             <OrderListAdmin />
-            :
-            <OrderList />
-        }
-        <Button onClick={handleSignOut} id="navbarLogoutButton">Deslogar</Button>
+          </>
+        )}
+        {userData.role !== 'ADMIN' && <OrderList />}
+        <Button onClick={handleSignOut} id="navbarLogoutButton" className="w-full">Deslogar</Button>
       </CardContent>
     </Card>
   );

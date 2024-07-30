@@ -1,107 +1,117 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import { Admin } from '../fixtures/users.json';
-
-const baseUrl = "http://localhost:3000"
-const serverBaseUrl = "http://localhost:3333"
-
-let itemId: number;
+import { Customer } from '../fixtures/users.json'
 
 
-Given('O usuário está logado como admin', () => {
-  cy.visit(baseUrl);
-  cy.get("#navbarLoginButton").click();
-  cy.get("#emailInput").type(Admin.email);
-  cy.get("#senhaInput").type(Admin.senha);
-  cy.intercept("GET", `${serverBaseUrl}/api/auth/me`).as("LoggedInRequest");
-  cy.get("#loginButton").click();
-  cy.wait("@LoggedInRequest");
-  cy.get("#loggedInMessage").should("exist");
+describe('Cadastro e manutenção de itens no menu', () => {
+    const baseUrl = 'http://localhost:3000';
+    const serverBaseUrl = 'http://localhost:3000/api';
+
+    const productName = 'Teste';
+    const newProductName = 'Produto B';
+    const newProductNameToInsert = 'Produto C';
+    const newProductPrice = '100';
+    const newProductStock = '10';
+    const newProductDescription = 'Descrição do produto';
+    const newProductImage = 'https:\/www.google.com';
+    const newProductCategory = 'Categoria do produto';
+
+    beforeEach(() => {
+        cy.visit(baseUrl);
+    });
+
+    // Teste de login
+    Given('O usuário de email "teste@gmail.com" está logado', () => {
+        cy.get("#navbarLoginButton").click();
+        cy.get("#emailInput").type("teste@gmail.com");
+        cy.get("#senhaInput").type("senha123");
+        cy.intercept("GET", `${serverBaseUrl}/api/auth/me`).as("LoggedInRequest");
+        cy.get("#loginButton").click();
+        cy.wait("@LoggedInRequest");
+        cy.get("#loggedInMessage").should("exist");
+        cy.wait(200);
+        cy.get('[xmlns="http://www.w3.org/2000/svg"]').click();
+    });
+
+    // Teste de visualização da página de produtos
+        // Esperar até que os produtos estejam carregados
+    Given('O usuário está na página Produtos', () => {
+    cy.visit(baseUrl + "/product");
+    cy.intercept("GET", `${serverBaseUrl}/api/product`).as("getProducts");
+    cy.wait("@getProducts").its('response.statusCode').should('eq', 200);
+    cy.get("div").contains("Todos os Produtos").should('exist');
 });
 
-Given('O usuário está na página principal', () => {
-  cy.visit(`${baseUrl}/`);
-});
+    
 
-Then('O usuário deve ver a lista de produtos na tela', () => {
-  cy.get('#product-list').should('exist');
-});
+    // Teste de inserção de um novo produto
+    When('O usuário insere um novo produto com o nome "Produto C"', () => {
+        cy.get("button").contains("Adicionar Produto").click();
+        cy.get("input[placeholder='Nome da peça']").type(newProductNameToInsert);
+    });
 
-Given('O usuário está na página de administração de produtos', () => {
-  cy.visit(`${baseUrl}/admin/product`);
-});
+    When('o preço é "100"', () => {
+        cy.get("input[placeholder='Preço']").type(newProductPrice);
+    });
 
-When('O usuário insere {string} na caixa de input "Nome da peça"', (name: string) => {
-  cy.get('#item-name-input').type(name);
-});
+    When('o estoque é "10"', () => {
+        cy.get("input[placeholder='Estoque']").type(newProductStock);
+    });
 
-When('O usuário insere {string} na caixa de input "Imagem da peça"', (imageUrl: string) => {
-  cy.get('#item-image-input').type(imageUrl);
-});
+    When('a descrição é "Descrição do produto"', () => {
+        cy.get("input[placeholder='Descrição']").type(newProductDescription);
+    });
 
-When('O usuário insere {string} na caixa de input "Preço"', (price: string) => {
-  cy.get('#item-price-input').type(price);
-});
+    When('a imagem é "https:\/www.google.com"', () => {
+        cy.get("input[placeholder='Imagem']").type(newProductImage);
+    });
 
-When('O usuário insere {string} na caixa de input "Estoque"', (stock: string) => {
-  cy.get('#item-stock-input').type(stock);
-});
+    When('a categoria é "Categoria do produto"', () => {
+        cy.get("input[placeholder='Categoria']").type(newProductCategory);
+    });
 
-When('O usuário seleciona {string} na caixa de seleção da "Categoria"', (category: string) => {
-  cy.get('#item-category-select').select(category);
-});
+    When('salva as alterações', () => {
+        cy.get("button").contains("Salvar").click();
+    });
 
-When('O usuário insere {string} na caixa de input "Descrição"', (description: string) => {
-  cy.get('#item-description-input').type(description);
-});
+    Then('O novo produto deve aparecer na lista com o nome "Produto C"', () => {
+        cy.get("div").contains(newProductNameToInsert).should('exist');
+    });
 
-When('O usuário clica em "Criar"', () => {
-  cy.intercept("POST", `${serverBaseUrl}/api/items`).as("CreateItemRequest");
-  cy.get('#confirm-create-item-button').click();
-  cy.wait("@CreateItemRequest").then((interception) => {
-    if (interception.response) {
-      const responseBody = interception.response.body;
-      itemId = responseBody.id;
-    }
-  });
-});
+    // Teste para visualizar um produto
+    Given('O produto de nome {string} está disponível na loja', (product) => {
+        cy.get("div").contains(product as string).should('exist');
+    });
 
-Then('um novo produto é criado e exibido no menu com o nome {string}', (name: string) => {
-  cy.get(`#item-${itemId}`).should('exist').contains(name);
-});
 
-Given('O produto {string} está selecionado', (name: string) => {
-  cy.get(`#item-${itemId}`).should('exist').contains(name);
-});
+    Then("Então o usuário deve ser capaz de visualizar o produto", () => {
+        cy.get("div").contains(productName).should('exist');
+    });
 
-When('O usuário insere {string} na caixa de input "Preço"', (newPrice: string) => {
-  cy.get('#item-price-input').clear().type(newPrice);
-});
+    // Teste para selecionar um produto e abrir o formulário de edição
+    When('O usuário seleciona o produto de nome {string}', (product) => {
+        cy.get("div").contains(product as string).click();
+        cy.get(".bg-gray-100").should("exist");
+    });
 
-When('O usuário clica em "Atualizar"', () => {
-  cy.intercept("PUT", `${serverBaseUrl}/api/items/${itemId}`).as("UpdateItemRequest");
-  cy.get('#confirm-update-item-button').click();
-  cy.wait("@UpdateItemRequest");
-});
+    // Teste de edição de um produto
+    When('O usuário altera o nome do produto para "Produto B" e salva as alterações', () => {
+        cy.get("input[placeholder='Nome da peça']").clear().type(newProductName);
+        cy.get("button").contains("Salvar alterações").click();
+    });
 
-Then('o produto é atualizado', () => {
-  cy.get(`#item-${itemId}`).should('exist');
-});
+    Then('O produto deve ter o novo nome "Produto B"', () => {
+        cy.get("div").contains(newProductName).should('exist');
+    });
 
-Then('é exibido na listagem de produtos o produto com o novo preço', () => {
-  cy.get(`#item-${itemId} .item-price`).should('contain', '0');
-});
+    //teste deleção
+    When('O usuário clica no botão "Deletar"', () => {
+        cy.get("div").contains(newProductName).click();
+        cy.get("button").contains("Deletar").click();
+    });
 
-When('O usuário clica em "Deletar"', () => {
-  cy.intercept("DELETE", `${serverBaseUrl}/api/items/${itemId}`).as("DeleteItemRequest");
-  cy.get(`#item-${itemId} .delete-button`).click();
-  cy.get('#confirm-delete-item-button').click();
-  cy.wait("@DeleteItemRequest");
-});
+    Then('O produto é removido da lista', () => {
+        cy.get("div").contains(newProductName).should('not.exist');
+    });
 
-Then('o produto é deletado', () => {
-  cy.get(`#item-${itemId}`).should('not.exist');
-});
-
-Then('não é exibido na listagem de produtos', () => {
-  cy.get(`#item-${itemId}`).should('not.exist');
+    
 });
