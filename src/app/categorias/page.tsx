@@ -157,7 +157,7 @@ const CategoriesPage: React.FC = () => {
   };
 
   const handleCategoryClick = (categoryId: number) => {
-    router.push(`/produto?categoria=${categoryId}`);
+    router.push(`/product?categoria=${categoryId}`);
   };
 
   const closeErrorDialog = () => {

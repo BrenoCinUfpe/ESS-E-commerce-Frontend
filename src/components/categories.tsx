@@ -52,7 +52,7 @@ const CategoriesComponent: React.FC = () => {
             <div className="w-full h-full p-4">
               {categories.map(item => (
                 <div key={item.id} className="w-full hover:text-projRed transition-colors">
-                  <Link href={`/produtos?categoria=${item.id}`} className="block w-full">
+                  <Link href={`/product?categoria=${item.id}`} className="block w-full">
                     <p className="font-abeezee">{item.name}</p>
                   </Link>
                 </div>
