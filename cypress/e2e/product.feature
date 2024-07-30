@@ -1,35 +1,30 @@
-Feature: Menu Items
-
-  Background:
-    Given O usuário está logado como admin
-    And O usuário está na página principal
-    Then O usuário deve ver a lista de produtos na tela
+Feature: Cadastro e manutenção de itens no menu
+  Contexto: 
+    Given O usuário de email "teste@gmail.com" está logado
+    And O usuário está na página Produtos
 
   Scenario: Inserção de novo produto
-    Given O usuário está logado como admin
-    And O usuário está na página de adminstração de produtos
-    When O usuário insere "All star alto" na caixa de input "Nome da peça"
-    And O usuário insere "https://example.com/allstar.jpg" na caixa de input "Imagem da peça"
-    And O usuário insere "105.99" na caixa de input "Preço"
-    And O usuário insere "53" na caixa de input "Estoque"
-    And O usuário seleciona "Tênis" na caixa de seleção da "Categoria"
-    And O usuário insere "All Star cano alto rosa" na caixa de input "Descrição"
-    Then um novo produto é criado e exibido no menu com o nome "All star cano alto"
+    Quando O usuário insere um novo produto com o nome "Produto C" 
+    E O preço é "100"
+    E O estoque é "10"
+    E A descrição é "Descrição do produto"
+    E A imagem é "https://www.google.com"
+    E A categoria é "Categoria do produto"
+    E salva
+    Então O novo produto deve aparecer na lista com o nome "Produto C"
 
-  Scenario: Seleção de produto existente
-    Given O usuário está logado como admin
-    And O usuário está na página de adminstração de produtos
-    When O usuário seleciona o produto "All star alto" na lista de produtos
-    Then A caixa de edição do produto é aberta
+  Scenario: Verificação da presença de um produto
+    Dado que existe um produto de nome "Teste" disponível na loja
+    Então o usuário deve ser capaz de visualizar o produto
 
   Scenario: Edição de produto existente
-    Given O produto "All star alto" está selecionado
-    When O usuário insere "0" na caixa de input "Preço"
-    Then o produto é atualizado
-    And é exibido na listagem de produtos o produto com o novo preço
+    Dado que existe um produto de nome "Teste" disponível na loja
+    Quando O usuário seleciona o produto de nome "Teste"
+    E O usuário altera o nome do produto para "Produto B" e salva as alterações
+    Então O produto deve ter o novo nome "Protudo B"
 
-  Scenario: Deletando um item existente
-    Given O produto "All star alto" está selecionado
-    When O usuário clica em "Deletar"
-    Then o produto é deletado
-    And não é exibido na listagem de produtos
+  Scenario: Deletando um produto existente
+    Dado O produto "Produto B" está disponível na loja
+    Quando O usuário seleciona o produto de nome "Produto B"
+    E O usuário clica em "Deletar"
+    Então O produto é removido da lista

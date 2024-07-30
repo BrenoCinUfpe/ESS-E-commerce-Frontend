@@ -31,5 +31,30 @@
     "Chuteira": {
         "nome": "Chuteira",
         "imagemUrl": "https://cdn-icons-png.flaticon.com/512/933/933633.png"
+    },
+    "Produto A": {
+        "nome": "Produto A",
+        "preco": "50",
+        "estoque": "20",
+        "descricao": "Descrição do Produto A",
+        "imagemUrl": "https://cdn-icons-png.flaticon.com/512/500/500225.png",
+        "categoria": "Categoria A"
+    },
+    "Produto B": {
+        "nome": "Produto B",
+        "preco": "150",
+        "estoque": "15",
+        "descricao": "Descrição do Produto B",
+        "imagemUrl": "https://cdn-icons-png.flaticon.com/512/908/908036.png",
+        "categoria": "Categoria B"
+    },
+    "Produto C": {
+        "nome": "Produto C",
+        "preco": "100",
+        "estoque": "10",
+        "descricao": "Descrição do Produto C",
+        "imagemUrl": "https://www.google.com",
+        "categoria": "Categoria do produto" 
     }
+
 }
