@@ -13,7 +13,7 @@ Node v20
 
 ### Envs
 
-- URL do front-end
+- URL do front-end 
 NEXTAUTH_URL=
 - Valor aleatorio
 NEXTAUTH_SECRET=SADIASOD2931
