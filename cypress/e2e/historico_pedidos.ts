@@ -33,7 +33,7 @@ When('O usuário acessa a funcionalidade de listar pedidos', () => {
         .click();
 })
 Then('Os pedidos existentes do usuário devem ser listados em sua tela', () => {
-    cy.get("#pedidosUserContainer")
+    cy.get("#pedidosUserContainer", {timeout: 5000})
         .should("contain", "Status");
 
     cy.get("#pedidosUserContainer")

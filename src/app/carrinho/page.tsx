@@ -78,13 +78,13 @@ export default function Carrinho() {
     frete: 0,
     total: 0
   });
-  const [tempoEntrega, setTempoEntrega] = useState<string>();
+  const [tempoEntrega, setTempoEntrega] = useState<number>();
   const [cep, setCep] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [popupMessage, setPopupMessage] = useState<string>("");
 
-  const updateDadosPedido = (cartData_temp:Cart) => {
+  const updateDadosPedido = (cartData_temp:Cart, dias:number) => {
     let newSubTotal = 0;
 
     cartData_temp.products.forEach(item => {
@@ -93,13 +93,17 @@ export default function Carrinho() {
 
     if(newSubTotal>0){
       let desconto = newSubTotal/10;
-      let frete = 25.0;
+      let frete = 5.5*dias;
+      // console.log('---')
+      // console.log('newSubTotal: '+newSubTotal);
+      // console.log('frete: '+frete);
+      // console.log('desconto: '+desconto);
+      // console.log('total: '+(newSubTotal - desconto + frete));
+
   
       setDadosPedido(prev => ({
         ...prev, subtotal: newSubTotal, total: newSubTotal - desconto + frete, desconto: desconto, frete: frete
       }))
-  
-      console.log(newSubTotal);
     }
     else{
       setDadosPedido(prev => ({
@@ -120,13 +124,13 @@ export default function Carrinho() {
     }
 
     setCart(cart.data);
-    updateDadosPedido(cart.data);
+    updateDadosPedido(cart.data, (tempoEntrega?tempoEntrega:0));
     setLoading(false);
   }
 
   const fetchCartNoLoading = async () => {
     const cart = await axiosAuth.get("/api/cart")
-    updateDadosPedido(cart.data);
+    updateDadosPedido(cart.data, (tempoEntrega?tempoEntrega:0));
     setCart(cart.data);
   }
 
@@ -177,16 +181,22 @@ export default function Carrinho() {
     }
 
     const handleCalculateDeliveryTime = async () => {
-      const formattedCep = formatCep(cep);
-      if (!validateCep(formattedCep)) {
-        setError('CEP inválido. Por favor, insira um CEP válido.');
-        setTempoEntrega('');
-        return;
-      }
+      if(!tempoEntrega){
+        const formattedCep = formatCep(cep);
+        if (!validateCep(formattedCep)) {
+          setError('CEP inválido. Por favor, insira um CEP válido.');
+          setTempoEntrega(0);
+          return;
+        }
 
-      const deliveryTime = (Math.floor(Math.random() * 6) + 3).toString();
-      setTempoEntrega(deliveryTime);
-      setError('');
+        const deliveryTime = (Math.floor(Math.random() * 6) + 3);
+        setTempoEntrega(deliveryTime);
+
+        const cart = await axiosAuth.get("/api/cart")
+        updateDadosPedido(cart.data, deliveryTime);
+
+        setError('');
+      }
     }
 
     const handleCheckout = () => {
@@ -314,7 +324,7 @@ export default function Carrinho() {
                             onChange={handleCepChange}
                           />
                           <div
-                            className="font-abeezee italic text-sm h-[40px] cursor-pointer rounded-full bg-black text-white flex justify-center items-center pl-6 pr-6"
+                            className={`font-abeezee italic text-sm h-[40px] cursor-pointer rounded-full bg-black text-white flex justify-center items-center pl-6 pr-6 ${tempoEntrega? `opacity-50` : ``}`}
                             onClick={handleCalculateDeliveryTime}
                           >
                             Calcular
