@@ -302,7 +302,7 @@ export default function Carrinho() {
                         <p className="absolute right-0">{`R$ ${floatToMoney(dadosPedido.subtotal)}`}</p>
                       </div>
                       <div className="w-full flex relative pt-2">
-                        <p className="opacity-80">Desconto (20%)</p>
+                        <p className="opacity-80">Desconto (10%)</p>
                         <p className="absolute right-0 text-projRed">{`-R$ ${floatToMoney(dadosPedido.desconto)}`}</p>
                       </div>
                       <div className="w-full flex relative pt-2">
