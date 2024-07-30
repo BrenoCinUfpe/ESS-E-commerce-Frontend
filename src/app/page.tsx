@@ -142,9 +142,13 @@ function HomeContent() {
     }
   };
 
-  const getRandomProducts = (products: Product[]) => {
-    const shuffled = products.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, Math.ceil(products.length / 2));
+  const getRandomProducts = (products: Product[]): Product[] => {
+    const shuffledProducts = products
+      .map(product => ({ product, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ product }) => product);
+      
+    return shuffledProducts.slice(0, 4);
   };
 
   const renderProducts = (products: Product[]) => {
