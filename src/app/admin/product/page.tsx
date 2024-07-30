@@ -45,7 +45,7 @@ function ProductPageContent() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null); 
   const [errorDialogVisible, setErrorDialogVisible] = useState<boolean>(false); 
-  const { register, handleSubmit, formState: { errors } } = useForm<Product>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Product>();
   const { userData } = useUserDataContext();
   const router = useRouter();
   const [userIsAdmin, setUserIsAdmin] = useState(userData.role === 'ADMIN');
@@ -72,6 +72,7 @@ function ProductPageContent() {
     try {
       const response = await axiosAuth.post("/api/product", newData);
       alert("Item cadastrado com sucesso!");
+      reset();
       getInfo();
     } catch (refreshError) {
       console.error("Erro ao enviar informações para o backend:", refreshError);
@@ -90,6 +91,7 @@ function ProductPageContent() {
     try {
       await axiosAuth.patch(`/api/product/${productId}`, newData);
       alert("Alterações salvas com sucesso!");
+      reset();
       getInfo();
     } catch (error) {
       console.error("Erro ao atualizar o produto:", error);
@@ -110,6 +112,7 @@ function ProductPageContent() {
     try {
       await axiosAuth.delete(`/api/product/${selectedProduct.id}`);
       alert("Produto deletado com sucesso!");
+      reset();
       getInfo();
     } catch (deleteError) {
       console.error("Erro ao deletar o produto:", deleteError);
@@ -172,6 +175,11 @@ function ProductPageContent() {
     }
   }, [session]);
 
+  useEffect(() => {
+    if (!selectedProduct) {
+      reset();
+    }
+  }, [selectedProduct, reset]);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <div className="w-full max-w-5xl p-4">
