@@ -75,7 +75,7 @@ const Navbar = () => {
   const { userData, setUserData } = useUserDataContext();
   const [searchString, setSearchString] = useState<string>("");
   const [categorias, setCategorias] = useState<Categoria[]>();
-  const marcas = ["Marca1", "Marca2"];
+  const marcas = ["Adidas", "Nike"];
   const [cart, setCart] = useState<Cart>();
   const [cartLoading, setCartLoading] = useState<boolean>(false);
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
@@ -217,7 +217,9 @@ const Navbar = () => {
             </div>
             <NavigationMenuItem>
               <div className={`p-2 md:p-4 flex justify-center items-center cursor-pointer hover:bg-accent/80 transition-all hover:text-accent-foreground h-10 rounded-md`}>
-                <div className={`font-abeezee text-[14px] text-projRed`}>OFERTAS</div>
+                <Link href={'/product'}>
+                  <div className={`font-abeezee text-[14px] text-projRed`}>OFERTAS</div>
+                </Link>
               </div>
               <NavigationMenuContent>
               </NavigationMenuContent>
@@ -231,10 +233,9 @@ const Navbar = () => {
               <NavigationMenuContent>
                 <div className={`w-[390px] h-fit mb-2`}>
                   <div className={`w-full h-full p-4`}>
-                    <p className={`w-full font-abel font-semibold text-lg pb-2`}>Marcas</p>
                     {marcas.map(marca => (
                       <div key={marca} className={`w-fit hover:text-projRed transition-colors`}>
-                        <Link href={`/produtos?marca=${marca}`}>
+                        <Link href={`/product?search=${marca}`}>
                           <p className={`font-abeezee`}>{marca}</p>
                         </Link>
                       </div>
